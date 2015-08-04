@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.8.1" last-position="0,0" last-zoom="1"
+	 default-schema="public" default-owner="postgres">
+<role name="proteomics"
+      inherit="true"
+      login="true"
+      encrypted="true"
+      password="********">
+</role>
+
+<database name="proteomics" encoding="UTF8" lc-collate="en_US" lc-ctype="en_US">
+	<role name="postgres"/>
+	<tablespace name="pg_default"/>
+</database>
+
+<schema name="public" protected="true" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="project">
+	<schema name="public"/>
+	<role name="proteomics"/>
+	<position x="98" y="20"/>
+	<column name="project_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="project_lims_id">
+		<type name="text"/>
+	</column>
+	<column name="project_name">
+		<type name="text"/>
+	</column>
+	<constraint name="project_id_pk" type="pk-constr" table="public.project">
+		<columns names="project_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="protein">
+	<schema name="public"/>
+	<role name="proteomics"/>
+	<position x="69.8906" y="149"/>
+	<column name="protein_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="project_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="accession">
+		<type name="text"/>
+	</column>
+	<column name="description">
+		<type name="smallint"/>
+	</column>
+	<column name="sum_coverage">
+		<type name="double precision"/>
+	</column>
+	<column name="sum_num_of_proteins">
+		<type name="smallint"/>
+	</column>
+	<column name="sum_num_of_unique_peptides">
+		<type name="smallint"/>
+	</column>
+	<column name="sum_num_of_peptides">
+		<type name="smallint"/>
+	</column>
+	<column name="sum_num_of_psms">
+		<type name="double precision"/>
+	</column>
+	<column name="num_of_amino_acids">
+		<type name="smallint"/>
+	</column>
+	<column name="molecular_weight_kDa">
+		<type name="double precision"/>
+	</column>
+	<column name="calc_pI">
+		<type name="double precision"/>
+	</column>
+	<constraint name="protein_id_pk" type="pk-constr" table="public.protein">
+		<columns names="protein_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="protein_tag">
+	<schema name="public"/>
+	<role name="proteomics"/>
+	<position x="523.156" y="77"/>
+	<column name="protein_tag_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="protein_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="name">
+		<type name="text"/>
+	</column>
+	<column name="ratio">
+		<type name="double precision"/>
+	</column>
+	<column name="count">
+		<type name="smallint"/>
+	</column>
+	<column name="variability">
+		<type name="smallint"/>
+	</column>
+	<constraint name="protein_tag_id_pk" type="pk-constr" table="public.protein_tag">
+		<columns names="protein_tag_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="protein_score">
+	<schema name="public"/>
+	<role name="proteomics"/>
+	<position x="532" y="214"/>
+	<column name="protein_score_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="protein_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="name">
+		<type name="smallint"/>
+	</column>
+	<column name="search_engine_name">
+		<type name="smallint"/>
+	</column>
+	<column name="score">
+		<type name="smallint"/>
+	</column>
+	<column name="coverage">
+		<type name="float"/>
+	</column>
+	<column name="num_of_peptides">
+		<type name="smallint"/>
+	</column>
+	<column name="num_of_psm">
+		<type name="smallint"/>
+	</column>
+	<constraint name="protein_score_id_pk" type="pk-constr" table="public.protein_score">
+		<columns names="protein_score_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="project_id_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.project" table="public.protein">
+	<columns names="project_id" ref-type="src-columns"/>
+	<columns names="project_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="protein_id_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.protein" table="public.protein_tag">
+	<columns names="protein_id" ref-type="src-columns"/>
+	<columns names="protein_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="protein_id_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.protein" table="public.protein_score">
+	<columns names="protein_id" ref-type="src-columns"/>
+	<columns names="protein_id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_protein_project" type="relfk"
+	 custom-color="#68706e"
+	 src-table="public.protein"
+	 dst-table="public.project"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_protein_tag_protein" type="relfk"
+	 custom-color="#581db5"
+	 src-table="public.protein_tag"
+	 dst-table="public.protein"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_protein_score_protein" type="relfk"
+	 src-table="public.protein_score"
+	 dst-table="public.protein"
+	 src-required="false" dst-required="false"/>
+
+<permission>
+	<object name="proteomics" type="database"/>
+	<privileges connect="true" temporary="true"/>
+</permission>
+<permission>
+	<object name="proteomics" type="database"/>
+	<roles names="postgres"/>
+	<privileges create="true" connect="true" temporary="true"/>
+</permission>
+</dbmodel>
