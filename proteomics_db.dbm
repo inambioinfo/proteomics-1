@@ -12,6 +12,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
       password="********">
 </role>
 
+<role name="proteomics_cp"
+      inherit="true"
+      login="true"
+      encrypted="true"
+      password="********">
+</role>
+
 <database name="proteomics" encoding="UTF8" lc-collate="en_US" lc-ctype="en_US">
 	<role name="postgres"/>
 	<tablespace name="pg_default"/>
@@ -23,7 +30,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="project">
 	<schema name="public"/>
 	<role name="proteomics"/>
-	<position x="98" y="20"/>
+	<position x="70" y="10"/>
 	<column name="project_id" not-null="true">
 		<type name="smallint"/>
 	</column>
@@ -41,7 +48,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="protein">
 	<schema name="public"/>
 	<role name="proteomics"/>
-	<position x="69.8906" y="149"/>
+	<position x="150.891" y="128"/>
 	<column name="protein_id" not-null="true">
 		<type name="smallint"/>
 	</column>
@@ -86,7 +93,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="protein_tag">
 	<schema name="public"/>
 	<role name="proteomics"/>
-	<position x="523.156" y="77"/>
+	<position x="532.156" y="167"/>
 	<column name="protein_tag_id" not-null="true">
 		<type name="smallint"/>
 	</column>
@@ -113,7 +120,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="protein_score">
 	<schema name="public"/>
 	<role name="proteomics"/>
-	<position x="532" y="214"/>
+	<position x="529.203" y="24"/>
 	<column name="protein_score_id" not-null="true">
 		<type name="smallint"/>
 	</column>
@@ -130,7 +137,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="smallint"/>
 	</column>
 	<column name="coverage">
-		<type name="float"/>
+		<type name="double precision"/>
 	</column>
 	<column name="num_of_peptides">
 		<type name="smallint"/>
@@ -140,6 +147,81 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<constraint name="protein_score_id_pk" type="pk-constr" table="public.protein_score">
 		<columns names="protein_score_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="peptide">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="190" y="341"/>
+	<column name="peptide_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="protein_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="sequence">
+		<type name="text"/>
+	</column>
+	<column name="num_of_psms">
+		<type name="smallint"/>
+	</column>
+	<column name="num_of_proteins">
+		<type name="smallint"/>
+	</column>
+	<column name="num_of_protein_groups">
+		<type name="smallint"/>
+	</column>
+	<column name="mh_Da">
+		<type name="float"/>
+	</column>
+	<column name="qvalue">
+		<type name="float"/>
+	</column>
+	<column name="pep">
+		<type name="smallint"/>
+	</column>
+	<column name="num_of_missed_cleavages">
+		<type name="smallint"/>
+	</column>
+	<constraint name="peptide_id_pk" type="pk-constr" table="public.peptide">
+		<columns names="peptide_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="peptide_protein_group_accession">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="521" y="303"/>
+	<column name="peptide_protein_group_accession_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="peptide_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="accession">
+		<type name="text"/>
+	</column>
+	<constraint name="peptide_protein_group_accession_id_pk" type="pk-constr" table="public.peptide_protein_group_accession">
+		<columns names="peptide_protein_group_accession_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="peptide_modification">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="523" y="424"/>
+	<column name="peptide_modification_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="peptide_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="modification">
+		<type name="text"/>
+	</column>
+	<constraint name="peptide_modification_id_pk" type="pk-constr" table="public.peptide_modification">
+		<columns names="peptide_modification_id" ref-type="src-columns"/>
 	</constraint>
 </table>
 
@@ -161,21 +243,55 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="protein_id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="protein_id_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.protein" table="public.peptide">
+	<columns names="protein_id" ref-type="src-columns"/>
+	<columns names="protein_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="peptide_id_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.peptide" table="public.peptide_protein_group_accession">
+	<columns names="peptide_id" ref-type="src-columns"/>
+	<columns names="peptide_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="peptide_id_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.peptide" table="public.peptide_modification">
+	<columns names="peptide_id" ref-type="src-columns"/>
+	<columns names="peptide_id" ref-type="dst-columns"/>
+</constraint>
+
 <relationship name="rel_protein_project" type="relfk"
-	 custom-color="#68706e"
+	 custom-color="#a0c5a0"
 	 src-table="public.protein"
 	 dst-table="public.project"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_protein_tag_protein" type="relfk"
-	 custom-color="#581db5"
+	 custom-color="#e01b03"
 	 src-table="public.protein_tag"
 	 dst-table="public.protein"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_protein_score_protein" type="relfk"
+	 custom-color="#9c6e7a"
 	 src-table="public.protein_score"
 	 dst-table="public.protein"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_peptide_protein" type="relfk"
+	 src-table="public.peptide"
+	 dst-table="public.protein"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_peptide_protein_group_accession_peptide" type="relfk"
+	 src-table="public.peptide_protein_group_accession"
+	 dst-table="public.peptide"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_peptide_modification_peptide" type="relfk"
+	 src-table="public.peptide_modification"
+	 dst-table="public.peptide"
 	 src-required="false" dst-required="false"/>
 
 <permission>

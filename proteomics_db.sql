@@ -12,7 +12,6 @@ CREATE ROLE proteomics WITH
 	ENCRYPTED PASSWORD '********';
 -- ddl-end --
 
-
 -- Database creation must be done outside an multicommand file.
 -- These commands were put in this file only for convenience.
 -- -- object: proteomics | type: DATABASE --
@@ -86,7 +85,7 @@ CREATE TABLE public.protein_score(
 	name smallint,
 	search_engine_name smallint,
 	score smallint,
-	coverage float,
+	coverage double precision,
 	num_of_peptides smallint,
 	num_of_psm smallint,
 	CONSTRAINT protein_score_id_pk PRIMARY KEY (protein_score_id)
@@ -94,6 +93,52 @@ CREATE TABLE public.protein_score(
 );
 -- ddl-end --
 ALTER TABLE public.protein_score OWNER TO proteomics;
+-- ddl-end --
+
+-- object: public.peptide | type: TABLE --
+-- DROP TABLE IF EXISTS public.peptide CASCADE;
+CREATE TABLE public.peptide(
+	peptide_id smallint NOT NULL,
+	protein_id smallint NOT NULL,
+	sequence text,
+	num_of_psms smallint,
+	num_of_proteins smallint,
+	num_of_protein_groups smallint,
+	"mh_Da" float,
+	qvalue float,
+	pep smallint,
+	num_of_missed_cleavages smallint,
+	CONSTRAINT peptide_id_pk PRIMARY KEY (peptide_id)
+
+);
+-- ddl-end --
+ALTER TABLE public.peptide OWNER TO postgres;
+-- ddl-end --
+
+-- object: public.peptide_protein_group_accession | type: TABLE --
+-- DROP TABLE IF EXISTS public.peptide_protein_group_accession CASCADE;
+CREATE TABLE public.peptide_protein_group_accession(
+	peptide_protein_group_accession_id smallint NOT NULL,
+	peptide_id smallint NOT NULL,
+	accession text,
+	CONSTRAINT peptide_protein_group_accession_id_pk PRIMARY KEY (peptide_protein_group_accession_id)
+
+);
+-- ddl-end --
+ALTER TABLE public.peptide_protein_group_accession OWNER TO postgres;
+-- ddl-end --
+
+-- object: public.peptide_modification | type: TABLE --
+-- DROP TABLE IF EXISTS public.peptide_modification CASCADE;
+CREATE TABLE public.peptide_modification(
+	peptide_modification_id smallint NOT NULL,
+	peptide_id smallint NOT NULL,
+	modification text,
+	CONSTRAINT peptide_modification_id_pk PRIMARY KEY (peptide_modification_id)
+
+);
+-- ddl-end --
+ALTER TABLE public.peptide_modification OWNER TO postgres;
 -- ddl-end --
 
 -- object: project_id_fk | type: CONSTRAINT --
@@ -117,16 +162,25 @@ REFERENCES public.protein (protein_id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
--- object: grant_2059918b7f | type: PERMISSION --
-GRANT CONNECT,TEMPORARY
-   ON DATABASE proteomics
-   TO PUBLIC;
+-- object: protein_id_fk | type: CONSTRAINT --
+-- ALTER TABLE public.peptide DROP CONSTRAINT IF EXISTS protein_id_fk CASCADE;
+ALTER TABLE public.peptide ADD CONSTRAINT protein_id_fk FOREIGN KEY (protein_id)
+REFERENCES public.protein (protein_id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
--- object: grant_196817e624 | type: PERMISSION --
-GRANT CREATE,CONNECT,TEMPORARY
-   ON DATABASE proteomics
-   TO postgres;
+-- object: peptide_id_fk | type: CONSTRAINT --
+-- ALTER TABLE public.peptide_protein_group_accession DROP CONSTRAINT IF EXISTS peptide_id_fk CASCADE;
+ALTER TABLE public.peptide_protein_group_accession ADD CONSTRAINT peptide_id_fk FOREIGN KEY (peptide_id)
+REFERENCES public.peptide (peptide_id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ddl-end --
+
+-- object: peptide_id_fk | type: CONSTRAINT --
+-- ALTER TABLE public.peptide_modification DROP CONSTRAINT IF EXISTS peptide_id_fk CASCADE;
+ALTER TABLE public.peptide_modification ADD CONSTRAINT peptide_id_fk FOREIGN KEY (peptide_id)
+REFERENCES public.peptide (peptide_id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 
