@@ -1,7 +1,6 @@
-# proteomics
-Proteomics database project
+# Proteomics database project
 
-Three tables: Project, Protein & Peptide
+This project is to create a three tables: Project, Protein and Peptide database in order to load proteome datasets and ease the query of these datasets.
 
 
 ## Install dependencies in a virtual environment
