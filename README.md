@@ -1,6 +1,6 @@
 # Proteomics database project
 
-This project is to create a three tables: Project, Protein and Peptide database in order to load proteome datasets and ease the query of these datasets.
+This project is to create a database in order to load proteome datasets and ease the query of these datasets.
 
 
 ## Install dependencies in a virtual environment
@@ -62,13 +62,11 @@ python load_data.py --proteome-name='PR526' --proteome-filename=data/PR526.txt
 
 ## Query data
 
-### Using python
+### Accessing the proteomics database
 
-```
-python query_data.py
-```
+See wiki page [Accessing the proteomics database](https://github.com/crukci-bioinformatics/proteomics/wiki#accessing-the-proteomics-database)
 
-### Using pgAdmin SQL query tool
+### Using SQL
 
 * get all projects in DB
 ```
@@ -96,4 +94,10 @@ from project, protein, peptide
 where protein.project_id = project.id
 and peptide.protein_id = protein.id
 and protein.accession = 'P63261'
+```
+
+### Using python
+
+```
+python query_data.py
 ```
