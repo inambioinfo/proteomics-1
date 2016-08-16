@@ -42,66 +42,6 @@ If the database already exists, all tables will be dropped.
 python create_db.py
 ```
 
-### Move database to production server
-
-- Install Postgres on `bioinf-prot001`
-
-  ```
-  ssh bioinf-prot001.cri.camres.org
-  sudo su -
-  vi /etc/yum.repos.d/CentOS-Base.repo # add exclude=postgresql* in [base] and [updates] sections  
-  yum localinstall https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-2.noarch.rpm
-  yum list postgres*
-  yum install postgresql95-server
-  # data location
-  ls /var/lib/pgsql/9.5/data/
-  # initialise database (only needed once)
-  service postgresql-9.5 initdb
-  # to start postgresql automatically
-  chkconfig postgresql-9.5 on
-  # to start/stop service
-  service postgresql-9.5 start
-  ```
-
-- Create proteomics database
-
-  ```
-  $ ssh bioinf-gal001.cri.camres.org
-  $ sudo su - postgres
-  $ createuser proteomics
-  $ createdb proteomics
-  $ psql -U postgres -d proteomics
-  psql (9.5.4)
-  Type "help" for help.
-
-  proteomics=# grant all on database proteomics to proteomics;
-  GRANT
-  proteomics=# \q
-  $ vi 9.5/data/pg_hba.conf # add configuration for proteomics and set default lines to trust
-  $ vi 9.5/data/postgresql.conf # uncomment listen_addresses = 'localhost'
-  exit
-  sudo su -
-  /etc/init.d/postgresql-9.5 restart
-  ```
-
-- Copy database from `bioinf-gal001` to `bioinf-prot001`
-
-  ```
-  ssh bioinf-gal001.cri.camres.org
-  /usr/pgsql-9.3/bin/pg_dump -h localhost -p 5432 -U proteomics | gzip -f > 20160716-proteomics-db.gz
-  gunzip 20160716-proteomics-db.gz
-  createdb
-  ```
-  ```
-  ssh bioinf-prot001.cri.camres.org
-  scp bioinf-gal001:20160716-proteomics-db.gz .
-  sudo su -
-  cd /var/lib/pgsql
-  mv /home/pajon01/20160716-proteomics-db.gz .
-  gunzip 20160716-proteomics-db.gz
-  psql -h localhost -p 5432 -U proteomics -d proteomics < /var/lib/pgsql/20160716-proteomics-db
-  ```
-
 ## Load data
 
 Convert data into tab separated file using csvkit.
