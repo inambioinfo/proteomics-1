@@ -5,3 +5,7 @@ data/
 sqlalchemy-workspace/
 venv/
 *.pyc
+
+galaxy_proteomics/config.ini
+
+galaxy-dist/

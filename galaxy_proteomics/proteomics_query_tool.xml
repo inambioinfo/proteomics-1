@@ -1,0 +1,31 @@
+<tool id="proteomics" name="ProteomicsDB" version="0.1.1">
+    <description>Query the CRUKCI Proteomics database</description>
+    <requirements></requirements>
+    <stdio>
+        <exit_code range="1:"/>
+    </stdio>
+    <command><![CDATA[
+        python $__tool_directory__/query_proteomics_db.py
+        --config $__tool_directory__/config.ini
+        --protein $protein
+        --output $output
+    ]]></command>
+    <inputs>
+        <param name="protein" type="text"
+               label="The protein accession."
+               help="Enter the protein accession you wish to retrieve from the Proteomics database. It needs to be of this format 'P63261'."/>
+    </inputs>
+    <outputs>
+        <data name="output" format="tsv" label="${tool.name} for ${protein}"/>
+    </outputs>
+    <tests>
+        <test>
+            <param name="protein" value="P63261"/>
+            <output name="output" file="output_P63261.tsv"/>
+        </test>
+    </tests>
+    <help><![CDATA[
+        To use this tool enter a protein accession and press execute to find out if this protein exists in the Proteomics database.
+    ]]></help>
+    <citations/>
+</tool>

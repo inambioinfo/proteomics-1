@@ -72,7 +72,7 @@ See wiki page [Accessing the proteomics database](https://github.com/crukci-bioi
 ```
 select * from project;
 ```
-* get all proteins witin a project
+* get all proteins within a project
 ```
 select *
 from project, protein
