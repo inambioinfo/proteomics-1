@@ -101,3 +101,7 @@ and protein.accession = 'P63261'
 ```
 python query_data.py
 ```
+
+### Using Galaxy
+
+See [README](galaxy_proteomics/README.md)
