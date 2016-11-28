@@ -46,11 +46,24 @@ python create_db.py
 
 Convert data into tab separated file using csvkit.
 
-### Load test data
+### Load test data (by default loading v2.1)
+
+```
+in2csv data/PR688_v21_test.xlsx | cvsformat -T > data/PR688_v21_test.txt
+python load_data.py --proteome-name=TEST-PR688 --proteome-filename=data/PR688_v21_test.txt
+```
 
 ```
 in2csv data/PR526_test.xlsx | csvformat -T > data/PR526_test.txt
-python load_data.py --proteome-name=PR526 --proteome-filename=data/PR526_test.txt
+python load_data.py --proteome-name=TEST-PR526 --proteome-filename=data/PR526_test.txt --version='v1.4'
+```
+
+### Delete test data from the database
+
+```
+delete from peptide where protein_id in (select protein.id from protein, project where protein.project_id=project.id and project.name='TEST-PR688');
+delete from protein where project_id in (select id from project where name='TEST-PR688');
+delete from project where name='TEST-PR688';
 ```
 
 ### Load 5 proteomes
