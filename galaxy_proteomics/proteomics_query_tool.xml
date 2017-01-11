@@ -1,4 +1,4 @@
-<tool id="proteomics" name="ProteomicsDB" version="0.1.1">
+<tool id="proteomicsdb" name="ProteomicsDB" version="0.1.1">
     <description>Query the CRUKCI Proteomics database</description>
     <requirements></requirements>
     <stdio>
@@ -16,7 +16,7 @@
                help="Enter the protein accession you wish to retrieve from the Proteomics database. It needs to be of this format 'P63261'."/>
     </inputs>
     <outputs>
-        <data name="output" format="tsv" label="${tool.name} for ${protein}"/>
+        <data name="output" format="csv" label="${tool.name} for ${protein}"/>
     </outputs>
     <tests>
         <test>
