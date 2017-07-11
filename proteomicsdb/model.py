@@ -4,8 +4,7 @@ Python script model.py
 Created by Anne Pajon under user 'pajon01' on 13/10/15
 """
 
-
-from sqlalchemy import Column, DateTime, String, Integer, ForeignKey, Float, Text
+from sqlalchemy import Column, Date, String, Integer, ForeignKey, Float, Text
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -17,6 +16,11 @@ class Project(Base):
     __tablename__ = 'project'
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True)
+    experiment_type = Column(String(32))
+    source = Column(String(32))
+    research_group = Column(String(64))
+    completion_date = Column(Date)
+    description = Column(String(1024))
 
 
 class Protein(Base):

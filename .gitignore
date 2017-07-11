@@ -1,8 +1,6 @@
 .idea/
-alembic/
 alembic.ini
 data/
-sqlalchemy-workspace/
 venv/
 *.pyc
 

@@ -1,28 +1,10 @@
 # -*- coding: utf-8 -*-
 
-"""
-Python script data_loader
-
-Created by Anne Pajon under user 'pajon01' on 23/09/15
-"""
-
-"""
-Installing SQLAlchemy and activating venv
-
-$ virtualenv venv
-$ source venv/bin/activate
-$ pip install sqlalchemy
-
-Running the script
-$ python load_data.py
-"""
-
-import os
 import json
 import argparse
 import codecs
 
-import model
+import proteomicsdb.model as model
 
 
 def load_data_v21(session, project_name, project_filename):
@@ -91,6 +73,7 @@ def load_data_v21(session, project_name, project_filename):
         print 'Project %s loaded in DB' % project_name
     else:
         print 'Project %s already exists' % project_name
+
 
 def load_data_v14(session, project_name, project_filename):
     PROTEIN_HEADERS = ['Accession', 'Description', u'ΣCoverage', u'Σ# Proteins', u'Σ# Unique Peptides', u'Σ# Peptides', u'Σ# PSMs', '# AAs', 'MW [kDa]', 'calc. pI']

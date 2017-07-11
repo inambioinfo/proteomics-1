@@ -4,7 +4,7 @@ Python script query_data.py
 Created by Anne Pajon under user 'pajon01' on 14/10/15
 """
 import argparse
-import model
+import proteomicsdb.model as model
 
 QUERIES = ['proteome', 'sequence', 'protein']
 
@@ -59,4 +59,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
