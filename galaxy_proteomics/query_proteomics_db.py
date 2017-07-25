@@ -8,7 +8,7 @@ PROJECT_QUERY = """
 select * from project
 """
 PROTEIN_QUERY = """
-select project.name as project_name,
+select project.proteomics_id as project_proteomics_id,
         protein.accession as protein_accession,
         protein.description as protein_description,
         protein.total_coverage as protein_total_coverage,
@@ -33,7 +33,7 @@ and peptide.protein_id = protein.id
 and protein.accession = '%s'
 """
 
-PROTEIN_FIELDNAMES = ['project_name',
+PROTEIN_FIELDNAMES = ['project_proteomics_id',
                       'protein_accession',
                       'protein_description',
                       'protein_total_coverage',
@@ -53,6 +53,7 @@ PROTEIN_FIELDNAMES = ['project_name',
                       'peptide_pep',
                       'peptide_num_of_missed_cleavages'
                       ]
+
 
 def main():
     # command line options

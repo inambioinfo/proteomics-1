@@ -61,9 +61,9 @@ python load_data.py --proteome-name=TEST-PR526 --proteome-filename=data/PR526_te
 ### Delete test data from the database
 
 ```
-delete from peptide where protein_id in (select protein.id from protein, project where protein.project_id=project.id and project.name='TEST-PR688');
-delete from protein where project_id in (select id from project where name='TEST-PR688');
-delete from project where name='TEST-PR688';
+delete from peptide where protein_id in (select protein.id from protein, project where protein.project_id=project.id and project.proteomics_id='TEST');
+delete from protein where project_id in (select id from project where proteomics_id='TEST');
+delete from project where proteomics_id='TEST';
 ```
 
 ### Load 5 proteomes
@@ -115,7 +115,7 @@ select * from project;
 select *
 from project, protein
 where protein.project_id = project.id
-and project.name = 'PR526';
+and project.proteomics_id = 'PR526';
 ```
 * get all peptides with a certain sequence
 ```
@@ -143,3 +143,42 @@ python query_data.py
 ### Using Galaxy
 
 See [README](galaxy_proteomics/README.md)
+
+## On windows
+
+### Installation steps
+
+Download Python 2.7 from https://www.python.org/downloads/release/python-2713/
+Open the windows `Command Prompt` and type these commands:
+
+Testing python is installed:
+```
+C:\Python27\python.exe
+>>> quit()
+```
+
+Download zip file in `C:\Files\` folder on github from https://github.com/crukci-bioinformatics/proteomics/archive/master.zip and unzip it
+
+Open the windows `Command Prompt` and type these commands:
+```
+cd C:\Files\proteomics-master\proteomics-master\
+
+C:\Python27\Scripts\pip.exe install virtualenv
+C:\Python27\Scripts\virtualenv.exe venv
+
+venv\Scripts\activate.bat
+pip install -r requirements.txt
+```
+
+### Loading file steps
+
+It consists of two steps, converting the excel file into tab delimited file and loading it into the database using the `load_data.py` python script.
+
+It is important to make sure the output file from step 1 `PRxxx.txt` is the same as the one used in step 2 `--proteome-filename=PRxxx.txt`
+```
+cd C:\Files\proteomics-master\proteomics-master\
+venv\Scripts\activate.bat
+
+in2csv PRxxx.xlsx | csvformat -T > PRxxx.txt
+python load_data.py --proteome-name=PRxxx --proteome-filename=PRxxx.txt
+```

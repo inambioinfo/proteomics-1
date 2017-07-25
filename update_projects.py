@@ -14,16 +14,17 @@ dbsession = dbsession()
 with open('update_project.txt', 'rU') as f:
     reader = csv.DictReader(f, delimiter='\t')
     for line in reader:
-        project = dbsession.query(Project).filter(Project.name == line['name']).one()
+        project = dbsession.query(Project).filter(Project.proteomics_id == line['proteomics_id']).one()
         if project:
             project.completion_date = datetime.strptime(line['completion_date'], '%d.%m.%y')
             project.description = line['description']
             project.experiment_type = line['experiment_type']
             project.researcher = line['researcher']
             project.research_group = line['research_group']
-            project.cell_tissue_type = line['cell_tissue_type']
+            project.cell_or_tissue_type = line['cell_tissue_type']
             project.species = line['species']
             project.instrument = line['instrument']
-            print project.name, 'updated'
+            #project.experimental_details = line['experimental_details']
+            print project.proteomics_id, 'updated'
 
 dbsession.commit()

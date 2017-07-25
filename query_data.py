@@ -14,20 +14,20 @@ def query_data(session, query, value):
     print '\t'.join(['proteome', 'protein_accession', 'peptide_sequence'])
     if query == 'proteome':
         # get all proteins within a project
-        for protein in session.query(model.Protein).filter(model.Project.name == value).all():
+        for protein in session.query(model.Protein).filter(model.Project.proteomics_id == value).all():
             for peptide in protein.peptides:
-                print '\t'.join([protein.project.name, protein.accession, peptide.sequence])
+                print '\t'.join([protein.project.proteomics_id, protein.accession, peptide.sequence])
 
     if query == 'sequence':
         # get all peptides with a certain sequence
         for peptide in session.query(model.Peptide).filter(model.Peptide.sequence == value).all():
-            print '\t'.join([peptide.protein.project.name, peptide.protein.accession, peptide.sequence])
+            print '\t'.join([peptide.protein.project.proteomics_id, peptide.protein.accession, peptide.sequence])
 
     if query == 'protein':
         # get all proteins with a certain accession and all associated peptides
         for protein in session.query(model.Protein).filter(model.Protein.accession == value).all():
             for peptide in protein.peptides:
-                print '\t'.join([protein.project.name, protein.accession, peptide.sequence])
+                print '\t'.join([protein.project.proteomics_id, protein.accession, peptide.sequence])
 
 
 def main():

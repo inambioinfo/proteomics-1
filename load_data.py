@@ -11,9 +11,9 @@ def load_data_v21(session, project_name, project_filename):
     PROTEIN_HEADERS = ['Accession', 'Description', 'Coverage', '# Protein Groups', '# Unique Peptides', '# Peptides', '# PSMs', '# AAs', 'MW [kDa]', 'calc. pI']
     PEPTIDES_HEADERS = ['Annotated Sequence', '# PSMs', '# Proteins', '# Protein Groups', 'Theo. MH+ [Da]', 'Percolator q-Value Sequest HT', 'Percolator PEP Sequest HT', '# Missed Cleavages']
 
-    if not session.query(model.Project).filter(model.Project.name == project_name).count() > 0:
+    if not session.query(model.Project).filter(model.Project.proteomics_id == project_name).count() > 0:
         # create project
-        project = model.Project(name=project_name)
+        project = model.Project(proteomics_id=project_name)
         session.add(project)
 
         with codecs.open(project_filename, encoding='utf-8') as f:
@@ -79,9 +79,9 @@ def load_data_v14(session, project_name, project_filename):
     PROTEIN_HEADERS = ['Accession', 'Description', u'ΣCoverage', u'Σ# Proteins', u'Σ# Unique Peptides', u'Σ# Peptides', u'Σ# PSMs', '# AAs', 'MW [kDa]', 'calc. pI']
     PEPTIDES_HEADERS = ['Sequence', '# PSMs', '# Proteins', '# Protein Groups', 'MH+ [Da]', 'q-Value', 'PEP', '# Missed Cleavages']
 
-    if not session.query(model.Project).filter(model.Project.name == project_name).count() > 0:
+    if not session.query(model.Project).filter(model.Project.proteomics_id == project_name).count() > 0:
         # create project
-        project = model.Project(name=project_name)
+        project = model.Project(proteomics_id=project_name)
         session.add(project)
 
         with codecs.open(project_filename, encoding='utf-8') as f:
