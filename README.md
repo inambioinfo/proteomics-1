@@ -29,7 +29,7 @@ cd proteomics
 ```
 virtualenv venv
 source venv/bin/activate
-pip install -r requirememts.txt
+pip install -r requirements.txt
 ```
 
 ## Create the database (only once)

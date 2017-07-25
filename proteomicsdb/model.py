@@ -16,12 +16,16 @@ class Project(Base):
     __tablename__ = 'project'
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True)
-    experiment_type = Column(String(32))
-    source = Column(String(32))
-    research_group = Column(String(64))
     completion_date = Column(Date)
     description = Column(String(1024))
-
+    experiment_type = Column(String(32))
+    researcher = Column(String(64))
+    research_group = Column(String(64))
+    cell_tissue_type = Column(String(32))
+    species = Column(String(32))
+    instrument = Column(String(32))
+    experimental_details = Column(String(1024))
+    
 
 class Protein(Base):
     __tablename__ = 'protein'
