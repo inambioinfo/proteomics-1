@@ -3,5 +3,5 @@ psycopg2
 sqlalchemy
 alembic
 
-# spreadsheet conversion
-csvkit
+# data manipulation
+pandas

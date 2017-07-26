@@ -24,13 +24,13 @@ class Project(Base):
     cell_or_tissue_type = Column(String(32))
     species = Column(String(32))
     instrument = Column(String(32))
-    experimental_details = Column(String(1024))
+    experimental_details = Column(Text)
 
 
 class Protein(Base):
     __tablename__ = 'protein'
     id = Column(Integer, primary_key=True)
-    project_id = Column(Integer, ForeignKey('project.id'))
+    project_id = Column(Integer, ForeignKey('project.id', ondelete='CASCADE'))
     # Use cascade='delete,all' to propagate the deletion of a Project onto its Proteins
     project = relationship(
         Project,
@@ -57,7 +57,7 @@ class Protein(Base):
 class Peptide(Base):
     __tablename__ = 'peptide'
     id = Column(Integer, primary_key=True)
-    protein_id = Column(Integer, ForeignKey('protein.id'))
+    protein_id = Column(Integer, ForeignKey('protein.id',  ondelete='CASCADE'))
     # Use cascade='delete,all' to propagate the deletion of a Protein onto its Peptides
     protein = relationship(
         Protein,

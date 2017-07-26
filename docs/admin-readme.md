@@ -127,6 +127,15 @@ exit
 
 - Create test database
 
+## Delete test data from the database
+
+```
+delete from peptide where protein_id in (select protein.id from protein, project where protein.project_id=project.id and project.proteomics_id='TEST');
+delete from protein where project_id in (select id from project where proteomics_id='TEST');
+delete from project where proteomics_id='TEST';
+```
+
+
 ## Database migration
 
 Using alembic http://alembic.zzzcomputing.com/en/latest/index.html
@@ -138,7 +147,7 @@ alembic init alembic
 # add export PYTHONPATH=$HOME/workspace/git-proteomics into venv/bin/activate
 ```
 
-### Creating and running a migration script 
+### Creating and running a migration script
 
 ```bash
 # modify model.py and automatically generate the changes
