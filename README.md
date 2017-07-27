@@ -28,12 +28,18 @@ C:\Python27\python.exe
 >>> quit()
 ```
 
-### Clone github project
+### Clone GitHub project
 
 ```
 git clone https://github.com/crukci-bioinformatics/proteomics.git
 cd proteomics
 ```
+
+#### or clone it using GitHub Desktop
+
+https://desktop.github.com/
+
+using this url for the project `https://github.com/crukci-bioinformatics/proteomics.git` or directly by clicking on `Open in Desktop` from the web https://github.com/crukci-bioinformatics/proteomics.
 
 #### or download its zip file
 
@@ -52,7 +58,7 @@ pip install -r requirements.txt
 
 Open the `Command Prompt` and type these commands:
 ```
-cd C:\Files\proteomics-master\proteomics-master\
+cd "My Documents"\GitHub\proteomics\
 
 C:\Python27\Scripts\pip.exe install virtualenv
 C:\Python27\Scripts\virtualenv.exe venv
@@ -79,9 +85,10 @@ source venv/bin/activate
 ```
 
 #### On windows
+
 Open the `Command Prompt` and type these commands:
 ```
-cd C:\Files\proteomics-master\proteomics-master\
+cd "My Documents"\GitHub\proteomics\
 venv\Scripts\activate.bat
 ```
 
@@ -89,6 +96,10 @@ venv\Scripts\activate.bat
 
 ```bash
 python load_data.py --file=data/PRxxx.xlsx --id=PRxxx
+```
+or
+```
+python load_data.py --file=T:\group_folders\Clive_folder\PRxxx.xlsx --id=PRxxx
 ```
 
 Update data to existing project
@@ -106,7 +117,6 @@ python load_data.py --id=PRxxx --clean
 ```bash
 python load_data.py --file=data/PR526.xlsx --id=PR526 --verison=v14
 ```
-
 
 ### Updating project details
 
