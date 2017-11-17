@@ -97,9 +97,9 @@ venv\Scripts\activate.bat
 python load_data.py --file=data/PRxxx.xlsx --id=PRxxx
 ```
 
-On windows, use `C:\Python27\python.exe` instead of `python` for all the commands, for example:
+On windows:
 ```
-C:\Python27\python.exe load_data.py --file=T:\group_folders\Clive_folder\PRxxx.xlsx --id=PRxxx
+python load_data.py --file=T:\group_folders\Clive_folder\PRxxx.xlsx --id=PRxxx
 ```
 
 Update data to existing project
