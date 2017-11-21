@@ -37,6 +37,8 @@ def main():
                 project.instrument = data.instrument
                 project.experimental_details = data.experimental_details
                 print 'Project', project.proteomics_id, 'updated'
+            else:
+                print 'Project', project.proteomics_id, 'no in DB! Load data to create project first.'
         dbsession.commit()
     except Exception as e:
         dbsession.rollback()

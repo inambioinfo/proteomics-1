@@ -79,20 +79,22 @@ def load_data(dbsession, project_proteomics_id, workbook_file, version='v21', cl
     dbsession.add(project)
     print "Project %s added" % project.proteomics_id
     this_protein_header = None
+    this_peptide_header = None
     # load data
     for i, row in enumerate(sheet.iterrows(), 1):
         index, data = row
         data = data.tolist()
+        print '>>> loading data for project', project.proteomics_id, 'row', i
+        print data
         if data and len(data) > 1:
-            if (version == 'v21' and data[0] == 'Checked' and data[1].startswith('Protein')) or\
-               (version == 'v14' and data[0] == 'Accession'):
+            if (version == 'v21' and data[0] == 'Checked' and data[1].startswith('Protein')) or (version == 'v14' and data[0] == 'Accession'):
                 this_protein_header = data
                 for key in protein_header:
                     if key not in this_protein_header:
                         raise KeyError('Protein header key %s not found in file for version %s.' % (key, version))
             else:
-                # first column not empty, it is protein data
-                if data[0]:
+                # first column not empty, it is equal to TRUE OR FALSE (converted by pandas into a boolean) then it is protein data
+                if (data[0] is True) or (data[0] is False):
                     if not this_protein_header:
                         raise Exception('Protein header not found in file, check the version. Current is %s.' % version)
                     # transform data into dictionary using protein header as keys
@@ -121,8 +123,10 @@ def load_data(dbsession, project_proteomics_id, workbook_file, version='v21', cl
                         this_peptide_header = data
                         for key in peptide_header:
                             if key not in this_peptide_header:
-                                raise KeyError('Peptide header key %s not found in file for version %s' % (key, verison))
+                                raise KeyError('Peptide header key %s not found in file for version %s' % (key, version))
                     else:
+                        if not this_peptide_header:
+                            raise Exception('Peptide header not found in file, check the version. Current is %s.' % version)
                         # transform data into dictionary using peptide header as keys
                         peptide_dict = dict(zip(this_peptide_header, data))
                         peptide_extra_data_dict = {key: peptide_dict[key] for key in peptide_dict if key not in peptide_header}
