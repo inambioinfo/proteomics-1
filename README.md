@@ -164,23 +164,26 @@ Three tables' database diagram: Project, Protein & Peptide
 
 * get all projects in DB
 ```
-select * from project;
+select * from project
 ```
+
 * get all proteins within a project
 ```
 select *
 from project, protein
 where protein.project_id = project.id
-and project.proteomics_id = 'PR526';
+and project.proteomics_id = 'PR526'
 ```
+
 * get all peptides with a certain sequence
 ```
 select *
 from project, protein, peptide
 where protein.project_id = project.id
 and peptide.protein_id = protein.id
-and peptide.sequence = 'DLYANTVLSGGTTMYPGIADR';
+and peptide.sequence = 'DLYANTVLSGGTTMYPGIADR'
 ```
+
 * get all proteins with a certain accession and all associated peptides
 ```
 select *
@@ -188,4 +191,26 @@ from project, protein, peptide
 where protein.project_id = project.id
 and peptide.protein_id = protein.id
 and protein.accession = 'P63261'
+```
+
+* count the number of peptides per project given a certain protein accession
+```
+select project.proteomics_id, project.completion_date, project.experiment_type, project.instrument, project.cell_or_tissue_type, count(peptide.id)
+from project, protein, peptide
+where protein.project_id = project.id
+and peptide.protein_id = protein.id
+and protein.accession = 'P63261'
+group by project.proteomics_id, project.completion_date, project.experiment_type, project.instrument, project.cell_or_tissue_type
+order by project.completion_date
+```
+
+* count the number of peptides per project given a peptide sequence
+```
+select project.proteomics_id, project.completion_date, project.experiment_type, project.instrument, project.cell_or_tissue_type, count(peptide.id)
+from project, protein, peptide
+where protein.project_id = project.id
+and peptide.protein_id = protein.id
+and peptide.sequence = 'DLYANTVLSGGTTMYPGIADR'
+group by project.proteomics_id, project.completion_date, project.experiment_type, project.instrument, project.cell_or_tissue_type
+order by project.completion_date
 ```
